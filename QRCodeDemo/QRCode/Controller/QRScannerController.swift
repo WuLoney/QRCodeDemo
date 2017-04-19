@@ -11,7 +11,6 @@ import AVFoundation
 
 class QRScannerController: UIViewController {
     @IBOutlet weak var tapBar: UIView!
-    @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var backView: QRCodeHollowView!
     
     @IBAction func backBtnEvent(_ sender: UIButton) {
@@ -22,15 +21,15 @@ class QRScannerController: UIViewController {
     
     /// 判断系统权限
     private let captureAuth   = AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo)
-
+    
     /// 创建AVCaptureSession 负责输入和输出设备之间的数据传递,初始化会话操作
     private lazy var captureSession: AVCaptureSession = {
         let session = AVCaptureSession()
         /*
          设置会话操作的分辨率，一般在自定义相机，录像中会用到，并且要与输入，输出流的分辨率对应
-        if (session.canSetSessionPreset(AVCaptureSessionPreset640x480)) {
-            session.sessionPreset = AVCaptureSessionPreset640x480
-        }*/
+         if (session.canSetSessionPreset(AVCaptureSessionPreset640x480)) {
+         session.sessionPreset = AVCaptureSessionPreset640x480
+         }*/
         return session
     }()
     
@@ -48,29 +47,30 @@ class QRScannerController: UIViewController {
     /// 设备输出流
     private let captureMetadataOutput = AVCaptureMetadataOutput()
     
+    // 显示层
     fileprivate lazy var captureVideoPreviewLayer: AVCaptureVideoPreviewLayer = {
         let layer = AVCaptureVideoPreviewLayer.init(session: self.captureSession)
         layer?.frame = CGRect(x:0, y:0, width:self.view.frame.size.width, height:self.view.frame.size.height)
         layer?.videoGravity  = AVLayerVideoGravityResizeAspectFill//填充模式
         return layer!
     }()
-
+    
     private func startScan(){
-                //将设备输入添加到会话中
-                if captureSession.canAddInput(captureDeviceInput) {
-                    captureSession.addInput(captureDeviceInput)
-//                    //根据设备输出获得连接
-//                    let captureConnection = captureMetadataOutput?.connection(withMediaType: AVMediaTypeVideo)
-//                    let device:AVCaptureDevice = self.getCameraDeviceWithPosition(AVCaptureDevicePosition.front)
-//                    //是否支持光学防抖
-//                    if device.activeFormat.isVideoStabilizationModeSupported(AVCaptureVideoStabilizationMode.cinematic) {
-//                        captureConnection?.preferredVideoStabilizationMode = AVCaptureVideoStabilizationMode.cinematic
-//                    }
-                }
-                //将设备输出添加到会话中
-                if (captureSession.canAddOutput(captureMetadataOutput)) {
-                    captureSession.addOutput(captureMetadataOutput)
-                }
+        //将设备输入添加到会话中
+        if captureSession.canAddInput(captureDeviceInput) {
+            captureSession.addInput(captureDeviceInput)
+            //                    //根据设备输出获得连接
+            //                    let captureConnection = captureMetadataOutput?.connection(withMediaType: AVMediaTypeVideo)
+            //                    let device:AVCaptureDevice = self.getCameraDeviceWithPosition(AVCaptureDevicePosition.front)
+            //                    //是否支持光学防抖
+            //                    if device.activeFormat.isVideoStabilizationModeSupported(AVCaptureVideoStabilizationMode.cinematic) {
+            //                        captureConnection?.preferredVideoStabilizationMode = AVCaptureVideoStabilizationMode.cinematic
+            //                    }
+        }
+        //将设备输出添加到会话中
+        if (captureSession.canAddOutput(captureMetadataOutput)) {
+            captureSession.addOutput(captureMetadataOutput)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -90,11 +90,11 @@ class QRScannerController: UIViewController {
         // 匹配扫描二维码
         captureMetadataOutput.metadataObjectTypes = [AVMetadataObjectTypeQRCode]
         view.layer.addSublayer(self.captureVideoPreviewLayer)
+
         //显示在View的最上层
-        view.bringSubview(toFront: messageLabel)
         view.bringSubview(toFront: tapBar)
-        view.bringSubview(toFront: grCodeFrameView)
         view.bringSubview(toFront: backView)
+        view.bringSubview(toFront: grCodeFrameView)
     }
     
     /**
@@ -112,6 +112,9 @@ class QRScannerController: UIViewController {
                                       y:grCodeFrameView.frame.origin.y-64,
                                       width:grCodeFrameView.frame.size.width,
                                       height:grCodeFrameView.frame.size.height)
+        
+        /// 扫描区域
+        self.captureMetadataOutput.rectOfInterest = CGRect(x:grCodeFrameView.frame.origin.y/UIScreen.main.bounds.size.height, y:grCodeFrameView.frame.origin.x/UIScreen.main.bounds.size.width, width:grCodeFrameView.frame.size.height/UIScreen.main.bounds.height, height:grCodeFrameView.frame.size.width/UIScreen.main.bounds.width)
     }
 }
 
@@ -120,7 +123,6 @@ extension QRScannerController : AVCaptureMetadataOutputObjectsDelegate {
     func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [Any]!, from connection: AVCaptureConnection!) {
         
         if metadataObjects == nil || metadataObjects.count == 0 {
-            messageLabel.text = "No QR code is detected"
             return
         }
         
@@ -128,7 +130,20 @@ extension QRScannerController : AVCaptureMetadataOutputObjectsDelegate {
         if metadataObj.type == AVMetadataObjectTypeQRCode {
             _ = captureVideoPreviewLayer.transformedMetadataObject(for: metadataObj)
             if metadataObj.stringValue != nil {
-                messageLabel.text = metadataObj.stringValue
+                
+                let alert = UIAlertController(title: "扫描结果", message: metadataObj.stringValue, preferredStyle: UIAlertControllerStyle.alert)
+                
+                let action1 = UIAlertAction(title: "取消", style: UIAlertActionStyle.cancel, handler: { (action) in
+                    
+                })
+                
+                let action2 = UIAlertAction(title: "确定", style: UIAlertActionStyle.default, handler: { (action) in
+                    
+                })
+                
+                alert.addAction(action1)
+                alert.addAction(action2)
+                self.present(alert, animated: true, completion: nil)
             }
         }
     }

@@ -43,26 +43,12 @@
                                     <segue destination="B0K-bi-dGX" kind="presentation" id="UT3-hf-w8E"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b3P-Eq-uVJ">
-                                <rect key="frame" x="112" y="172.5" width="150" height="30"/>
-                                <color key="backgroundColor" red="0.34509563450000003" green="0.73321169610000003" blue="0.34531122450000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="150" id="0LX-Oc-GzD"/>
-                                    <constraint firstAttribute="height" constant="30" id="2c0-GQ-p50"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <state key="normal" title="扫一扫条形码">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="b3P-Eq-uVJ" firstAttribute="top" secondItem="i2c-aZ-o7l" secondAttribute="bottom" constant="20" id="1Kw-Qp-Xq9"/>
                             <constraint firstItem="i2c-aZ-o7l" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="9gq-Qq-yWl"/>
                             <constraint firstItem="gTu-vV-sCL" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="14" id="Kbm-oQ-BFb"/>
                             <constraint firstItem="gTu-vV-sCL" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="c9Z-Rj-xhG"/>
-                            <constraint firstItem="b3P-Eq-uVJ" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="hT4-dC-Jja"/>
                             <constraint firstItem="i2c-aZ-o7l" firstAttribute="top" secondItem="gTu-vV-sCL" secondAttribute="bottom" constant="20" id="sJj-FW-62v"/>
                         </constraints>
                     </view>
@@ -114,18 +100,8 @@
                                     <constraint firstItem="zmi-Qa-jYL" firstAttribute="top" secondItem="qba-q7-QE8" secondAttribute="top" constant="32" id="xDI-cK-1wM"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No QR code is detected" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AAl-zJ-uU4">
-                                <rect key="frame" x="0.0" y="587" width="375" height="80"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="80" id="zUl-hh-2xN"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rqQ-fy-Zyq" customClass="QRCodeHollowView" customModule="QRCodeDemo" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="64" width="375" height="523"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CcC-Nb-7zF" customClass="QRCodeView" customModule="QRCodeDemo" customModuleProvider="target">
@@ -149,24 +125,20 @@
                         <constraints>
                             <constraint firstItem="qba-q7-QE8" firstAttribute="top" secondItem="xpT-9d-mEX" secondAttribute="top" id="Cpg-la-Cca"/>
                             <constraint firstItem="rqQ-fy-Zyq" firstAttribute="top" secondItem="qba-q7-QE8" secondAttribute="bottom" id="Dzc-44-d0R"/>
-                            <constraint firstItem="AAl-zJ-uU4" firstAttribute="top" secondItem="rqQ-fy-Zyq" secondAttribute="bottom" id="FBN-85-0QQ"/>
                             <constraint firstAttribute="trailing" secondItem="CcC-Nb-7zF" secondAttribute="trailing" constant="60" id="J0j-gD-JgD"/>
-                            <constraint firstItem="AAl-zJ-uU4" firstAttribute="bottom" secondItem="irj-0H-Q0u" secondAttribute="top" id="KWU-Xr-5al"/>
                             <constraint firstItem="CcC-Nb-7zF" firstAttribute="leading" secondItem="xpT-9d-mEX" secondAttribute="leading" constant="60" id="Kvl-nP-4Rg"/>
                             <constraint firstItem="qba-q7-QE8" firstAttribute="trailing" secondItem="rqQ-fy-Zyq" secondAttribute="trailing" id="L0D-vc-r4j"/>
                             <constraint firstItem="CcC-Nb-7zF" firstAttribute="centerY" secondItem="xpT-9d-mEX" secondAttribute="centerY" id="U2p-kO-ebC"/>
+                            <constraint firstItem="irj-0H-Q0u" firstAttribute="top" secondItem="rqQ-fy-Zyq" secondAttribute="bottom" id="VHf-KO-s7O"/>
                             <constraint firstItem="qba-q7-QE8" firstAttribute="leading" secondItem="xpT-9d-mEX" secondAttribute="leading" id="ZeQ-9U-z7h"/>
-                            <constraint firstItem="rqQ-fy-Zyq" firstAttribute="trailing" secondItem="AAl-zJ-uU4" secondAttribute="trailing" id="bl9-p2-kSY"/>
                             <constraint firstAttribute="trailing" secondItem="qba-q7-QE8" secondAttribute="trailing" id="bwt-UC-gWF"/>
                             <constraint firstItem="qba-q7-QE8" firstAttribute="leading" secondItem="rqQ-fy-Zyq" secondAttribute="leading" id="o2h-mB-QZr"/>
-                            <constraint firstItem="rqQ-fy-Zyq" firstAttribute="leading" secondItem="AAl-zJ-uU4" secondAttribute="leading" id="o9R-gb-hMl"/>
                             <constraint firstItem="qba-q7-QE8" firstAttribute="centerX" secondItem="CcC-Nb-7zF" secondAttribute="centerX" id="oY6-Bc-HTI"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="backView" destination="rqQ-fy-Zyq" id="e7p-CC-Pjb"/>
                         <outlet property="grCodeFrameView" destination="CcC-Nb-7zF" id="IaD-oo-WYj"/>
-                        <outlet property="messageLabel" destination="AAl-zJ-uU4" id="ORa-Pg-23j"/>
                         <outlet property="tapBar" destination="qba-q7-QE8" id="LB5-vV-b1V"/>
                     </connections>
                 </viewController>
