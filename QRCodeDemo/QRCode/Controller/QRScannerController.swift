@@ -12,18 +12,27 @@ import AVFoundation
 class QRScannerController: UIViewController {
     @IBOutlet weak var tapBar: UIView!
     @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var backView: QRCodeHollowView!
+    
+    @IBAction func backBtnEvent(_ sender: UIButton) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    @IBOutlet weak var grCodeFrameView: QRCodeView!
+    
+    
     
     /// 判断系统权限
     private let captureAuth   = AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo)
         /// 加载 扫描结果
-    var grCodeFrameView: UIView = UIView() {
-        didSet{
-            grCodeFrameView.layer.borderColor = UIColor.green.cgColor
-            grCodeFrameView.layer.borderWidth = 2
-            view.addSubview(grCodeFrameView)
-            view.bringSubview(toFront: grCodeFrameView)
-        }
-    }
+//    var grCodeFrameView: UIView = UIView() {
+//        didSet{
+//            grCodeFrameView.layer.borderColor = UIColor.green.cgColor
+//            grCodeFrameView.layer.borderWidth = 2
+//            view.addSubview(grCodeFrameView)
+//            view.bringSubview(toFront: grCodeFrameView)
+//        }
+//    }
     
     /// 创建AVCaptureSession 负责输入和输出设备之间的数据传递,初始化会话操作
     private lazy var captureSession: AVCaptureSession = {
@@ -95,6 +104,25 @@ class QRScannerController: UIViewController {
         //显示在View的最上层
         view.bringSubview(toFront: messageLabel)
         view.bringSubview(toFront: tapBar)
+        view.bringSubview(toFront: grCodeFrameView)
+        view.bringSubview(toFront: backView)
+    }
+    
+    /**
+     * 在viewDidLoad之后会根据初始的frame再计算一次frame,过程中,你虽然更改了frame,但是auto layout之后又恢复了之前的frame,所以模拟器显示没有变化.
+     * 但为什么打印值变了呢?很简单,因为auto layout是在viewDidLoad方法之后计算的,所以在viewDidLoad方法中打印出的值肯定改变了,可后面又被改变回原来的值.
+     *
+     * 方法一：在 viewDidLayoutSubviews 设置frame
+     *
+     * 方法二：取消掉 UseAutoLayout选项
+     */
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        // grCodeFrameView.frame.origin.y-64该处减去64是因为 backView相对于self.view 有一个自定义View的高度
+        backView._hollowRect = CGRect(x:grCodeFrameView.frame.origin.x,
+                                      y:grCodeFrameView.frame.origin.y-64,
+                                      width:grCodeFrameView.frame.size.width,
+                                      height:grCodeFrameView.frame.size.height)
     }
 }
 
@@ -103,16 +131,13 @@ extension QRScannerController : AVCaptureMetadataOutputObjectsDelegate {
     func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [Any]!, from connection: AVCaptureConnection!) {
         
         if metadataObjects == nil || metadataObjects.count == 0 {
-            grCodeFrameView.frame = CGRect.zero
             messageLabel.text = "No QR code is detected"
             return
         }
         
         let metadataObj = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
         if metadataObj.type == AVMetadataObjectTypeQRCode {
-            let barCodeObject = captureVideoPreviewLayer.transformedMetadataObject(for: metadataObj)
-            grCodeFrameView.frame = barCodeObject!.bounds
-            
+            _ = captureVideoPreviewLayer.transformedMetadataObject(for: metadataObj)
             if metadataObj.stringValue != nil {
                 messageLabel.text = metadataObj.stringValue
             }
