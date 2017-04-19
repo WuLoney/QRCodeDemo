@@ -20,20 +20,9 @@ class QRScannerController: UIViewController {
     
     @IBOutlet weak var grCodeFrameView: QRCodeView!
     
-    
-    
     /// 判断系统权限
     private let captureAuth   = AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo)
-        /// 加载 扫描结果
-//    var grCodeFrameView: UIView = UIView() {
-//        didSet{
-//            grCodeFrameView.layer.borderColor = UIColor.green.cgColor
-//            grCodeFrameView.layer.borderWidth = 2
-//            view.addSubview(grCodeFrameView)
-//            view.bringSubview(toFront: grCodeFrameView)
-//        }
-//    }
-    
+
     /// 创建AVCaptureSession 负责输入和输出设备之间的数据传递,初始化会话操作
     private lazy var captureSession: AVCaptureSession = {
         let session = AVCaptureSession()
@@ -45,8 +34,8 @@ class QRScannerController: UIViewController {
         return session
     }()
     
-    ///设备输入流 采用前置摄像头输入
-    fileprivate lazy var captureDeviceInput: AVCaptureDeviceInput? = {
+    ///设备输入流
+    private lazy var captureDeviceInput: AVCaptureDeviceInput? = {
         let devices = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
         do {
             let input = try AVCaptureDeviceInput(device:devices)
@@ -57,7 +46,7 @@ class QRScannerController: UIViewController {
     }()
     
     /// 设备输出流
-    fileprivate let captureMetadataOutput = AVCaptureMetadataOutput()
+    private let captureMetadataOutput = AVCaptureMetadataOutput()
     
     fileprivate lazy var captureVideoPreviewLayer: AVCaptureVideoPreviewLayer = {
         let layer = AVCaptureVideoPreviewLayer.init(session: self.captureSession)
